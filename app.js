@@ -22,6 +22,8 @@ const priorityUser = "priority";
 const priorityPass = "Priority18";
 const priorityAuth = 'Basic ' + new Buffer(priorityUser + ':' +  priorityPass).toString('base64');
 
+const stickerDir = "/media/stickers";
+
 
 
 const PCHost = "172.16.0.7";
@@ -426,7 +428,7 @@ app.post('/baldar/newDelivery',
 
                 } else {
                     res.status(200).json({"DeliveryNum": retVal}).end();
-                    createCSVFile();
+                    createCSVFile(retVal,req.body);
                 }
             });
     });
@@ -472,24 +474,20 @@ function saveDelivery(deliveryJSON) {
 }
 
 
-function createCSVFile () {
+function createCSVFile (deliveryNumber,deliveryObj) {
     let csvFields = {
-        "DeliverNumber": '["ESHK_DELIVNO"]',
-        "TypeOfDelivery": '["STDES"]',
-        "OrderID": '["ORDNAME"]',
-        "CustomerName": '["CDES"]',
-        "ContactPerson": '["SHIPTO2_SUBFORM"]["NAME"]',
-        "ContactTel": '["SHIPTO2_SUBFORM"]["PHONENUM"]',
-        "Street": '["SHIPTO2_SUBFORM"]["ADDRESS"]',
-        "HouseNo": '["SHIPTO2_SUBFORM"]["ADDRESS2"]',
-        "City": '["SHIPTO2_SUBFORM"]["STATE"]',
-        "RemarkForShipping": '["SHIPREMARK"]'
+        "DeliverNumber": deliveryNumber,
+        "TypeOfDelivery": deliveryObj.name,
+        "OrderID": deliveryObj.customerDeliveryNum,
+        "CustomerName": deliveryObj.companyNameLet,
+        "ContactPerson": deliveryObj.contactManName,
+        "ContactTel": '',
+        "Street": deliveryObj.streetOut,
+        "HouseNo": deliveryObj.streetNumOut,
+        "City": deliveryObj.cityOut,
+        "RemarkForShipping": ''
     };
 
-
-
-//    const fields = ['field1', 'field2', 'field3'];
-//    const opts = { fields };
     let csv = "";
     try {
         const parser = new Json2csvParser();
@@ -499,7 +497,7 @@ function createCSVFile () {
         console.error(err);
     }
 
-    fs.writeFile("/tmp/test", csv, function (err) {
+    fs.writeFile(stickerDir, csv, function (err) {
         if (err) {
             return console.log(err);
         }
