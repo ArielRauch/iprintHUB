@@ -72,6 +72,7 @@ const deliverySource = {
     6469: {
         "name":"איסוף מפתח תקווה",
         "branch": "סניף פתח תקווה",
+        "engBranch": "PetahTikva",
         "vehicleTypeId": "2",
         "custID": "6469",
         "street": "הסיבים",
@@ -82,6 +83,7 @@ const deliverySource = {
     6470: {
         "name":"איסוף מבאר שבע",
         "branch": "סניף באר שבע",
+        "engBranch": "BeerSheva",
         "vehicleTypeId":"2",
         "custID": "6470",
         "street": "יהודה הנחתום",
@@ -92,6 +94,7 @@ const deliverySource = {
     6471: {
         "name":"משלוח ללקוח מסניף פת",
         "branch": "סניף פתח תקווה",
+        "engBranch": "PetahTikva",
         "vehicleTypeId":"1",
         "custID": "6471",
         "street": "הסיבים",
@@ -102,6 +105,7 @@ const deliverySource = {
     6473: {
         "name":"משלוח ללקוח מסניף בש",
         "branch": "סניף באר שבע",
+        "engBranch": "BeerSheva",
         "vehicleTypeId": "1",
         "custID": "6473",
         "street": "יהודה הנחתום",
@@ -112,6 +116,7 @@ const deliverySource = {
     6474: {
         "name":"דואר שליחים מבש",
         "branch": "סניף באר שבע",
+        "engBranch": "BeerSheva",
         "vehicleTypeId":"3",
         "custID": "6474",
         "street": "יהודה הנחתום",
@@ -122,6 +127,7 @@ const deliverySource = {
     6476: {
         "name":"דואר שליחים מפת",
         "branch": "סניף פתח תקווה",
+        "engBranch": "PetahTikva",
         "vehicleTypeId":"3",
         "custID": "6476",
         "street": "הסיבים",
@@ -132,6 +138,7 @@ const deliverySource = {
     6477: {
         "name":"דואר רשום מפת",
         "branch": "סניף פתח תקווה",
+        "engBranch": "PetahTikva",
         "vehicleTypeId":"4",
         "custID": "6477",
         "street": "הסיבים",
@@ -142,6 +149,7 @@ const deliverySource = {
     6475: {
         "name":"דואר רשום מבש",
         "branch": "סניף באר שבע",
+        "engBranch": "BeerSheva",
         "vehicleTypeId":"4",
         "custID": "6475",
         "street": "יהודה הנחתום",
@@ -450,15 +458,16 @@ function saveDelivery(deliveryJSON) {
             //let responseJSON = JSON.parse(body);
             console.log(body);
             let deliveryNumber =  JSON.parse(convert.xml2json(body, {compact: true, spaces: 4})).int._text;
-            deliveryJSON["DeliveryNumber"] = deliveryNumber;
-            deliveryJSON["DeliveryStatus"] = "1";
+            let updObj = {};
+            updObj["DeliveryNumber"] = deliveryNumber;
+            updObj["DeliveryStatus"] = "1";
             let selfPickup = deliverySource[deliveryJSON["CustomerID"]].selfpickup;
             if (selfPickup) {
-                deliveryJSON["EmployeeID"] = selfPickup;
-                deliveryJSON["EmployeeIDSec"] = selfPickup;
-                deliveryJSON["DeliveryStatus"] = "4";
+                updObj["EmployeeID"] = selfPickup;
+                updObj["EmployeeIDSec"] = selfPickup;
+                updObj["DeliveryStatus"] = "4";
             };
-            options.body = "pParam=" + JSON.stringify(deliveryJSON);
+            options.body = "pParam=" + JSON.stringify(updObj);
             return rp(options)
                 .then(body => {
                     console.log(body);
@@ -475,29 +484,43 @@ function saveDelivery(deliveryJSON) {
 
 
 function createCSVFile (deliveryNumber,deliveryObj) {
+    let fields = [
+        "DeliverNumber",
+        "TypeOfDelivery",
+        "OrderID",
+        "CustomerName",
+        "ContactPerson",
+        "ContactTel",
+        "Street",
+        "HouseNo",
+        "City",
+        "RemarkForShipping"
+    ];
     let csvFields = {
         "DeliverNumber": deliveryNumber,
-        "TypeOfDelivery": deliveryObj.name,
+        "TypeOfDelivery": deliverySource[deliveryObj["CustomerID"]].name,
         "OrderID": deliveryObj.customerDeliveryNum,
-        "CustomerName": deliveryObj.companyNameLet,
+        "CustomerName": deliveryObj.companyNameGet,
         "ContactPerson": deliveryObj.contactManName,
-        "ContactTel": '',
-        "Street": deliveryObj.streetOut,
-        "HouseNo": deliveryObj.streetNumOut,
-        "City": deliveryObj.cityOut,
-        "RemarkForShipping": ''
+        "ContactTel": deliveryObj.PhoneDes,
+        "Street": deliveryObj.streetDes,
+        "HouseNo": deliveryObj.streetNumDes,
+        "City": deliveryObj.cityDes,
+        "RemarkForShipping": deliveryObj.comment2
     };
 
     let csv = "";
     try {
-        const parser = new Json2csvParser();
+        const parser = new Json2csvParser({fields: fields.sort(), delimiter: '\t'});
         csv = parser.parse(csvFields);
         console.log(csv);
     } catch (err) {
         console.error(err);
     }
 
-    fs.writeFile(stickerDir, csv, function (err) {
+    let engBranch = deliverySource[deliveryObj["CustomerID"]].engBranch;
+
+    fs.writeFile(stickerDir+"/sticker_direct_" + engBranch + "_" + deliveryNumber + ".csv", "\ufeff" + csv, 'ucs2', function (err) {
         if (err) {
             return console.log(err);
         }
