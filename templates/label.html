@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+      <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">-->
+<link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-cSfiDrYfMj9eYCidq//oGXEkMc0vuTxHXizrMOFAaPsLt1zoCUVnSsURN+nef1lj" crossorigin="anonymous">
+<!--<link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css" integrity="sha384-vus3nQHTD+5mpDiZ4rkEPlnkcyTP+49BhJ4wJeJunw06ZAp+wzzeBPUXr42fi8If" crossorigin="anonymous">-->
+<!--<link rel="stylesheet" href="https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css" integrity="sha384-vus3nQHTD+5mpDiZ4rkEPlnkcyTP+49BhJ4wJeJunw06ZAp+wzzeBPUXr42fi8If" crossorigin="anonymous">-->
+     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-rtl/3.4.0/css/bootstrap-rtl.min.css"> -->
+<style>
+.gray {
+    background: rgb(203, 203, 203) !important;
+    border-style: solid !important;
+    border-width: thin !important;
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+}
+.white {
+    background: rgb(255, 255, 255) !important;
+    border-style: solid !important;
+    border-width: thin !important;
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+}
+.frame {
+    border-style: solid !important;   
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+}
+.row-m-b{
+  margin-bottom : 20px !important;   
+}
+textarea{
+    margin: 0px;
+    padding: 0px;
+    resize: none;
+}
+</style>
+
+</head>
+
+<body style="direction: rtl;margin-top:30px">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 text-center row-m-b small">
+                <figure>
+                    <img src="{{deliveryBC}}" />
+                    <figcaption>{{DeliveryNumber}}</figcaption>
+                </figure>
+            </div>
+        </div>
+        <div class="row row-m-b">
+            <div class="col-xs-12 text-center lead">
+                {{customerDeliveryNum}}
+            </div>
+        </div>
+        <div class="row small">
+            <div class="row gray">
+                <div class="col-xs-4">
+                   <strong> קוד משלוח: </strong>
+                </div>
+                <div class="col-xs-8">
+                     {{TypeOfDelivery}}
+                </div>
+            </div>
+           <div class="row white">
+                <div class="col-xs-4">
+                    <strong>כתובת:</strong>
+                </div>
+                <div class="col-xs-8">
+                     {{ streetDes }} {{streetNumDes}}/{{KnisaDes}}
+                </div>
+            </div>
+           <div class="row gray">
+                <div class="col-xs-4">
+                    <strong>עיר:</strong>
+                </div>
+                <div class="col-xs-8">
+                     {{cityDes}}
+                </div>
+            </div>
+           <div class="row white">
+                <div class="col-xs-4">
+                    <strong>איש קשר:</strong>
+                </div>
+                <div class="col-xs-8">
+                     {{contactManName}} - {{companyNameGet}}
+                </div>
+            </div>
+           <div class="row gray">
+                <div class="col-xs-4">
+                    <strong>נייד:</strong>
+                </div>
+                <div class="col-xs-8">
+                     {{PhoneDes}}
+                </div>
+            </div>
+           <div class="row white">
+                <div class="col-xs-4">
+                    <strong>הערות:</strong>
+                </div>
+                <div class="col-xs-8 pt-0">
+                    <textarea class="form-control" id="exampleFormControlTextarea4" rows="3">{{comment2}}</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</body>
+
+</html>
