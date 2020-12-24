@@ -21,7 +21,7 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "canvas": "^2.6.1",
-    "date-and-time": "^0.11.1",
+    "date-and-time": "^0.14.2",
     "express": "^4.17.1",
     "html-pdf": "^2.2.0",
     "jsbarcode": "^3.11.0",
