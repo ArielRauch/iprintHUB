@@ -40,8 +40,8 @@
     "xml2js": "^0.4.23"
   },
   "devDependencies": {
-    "@google-cloud/nodejs-repo-tools": "^2.3.6",
-    "ava": "0.25.0",
+    "@google-cloud/nodejs-repo-tools": "^3.3.0",
+    "ava": "5.1.0",
     "proxyquire": "2.0.0",
     "sinon": "4.4.2",
     "supertest": "3.0.0"
